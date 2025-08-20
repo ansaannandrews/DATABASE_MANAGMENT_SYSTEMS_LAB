@@ -1,1 +1,92 @@
+CREATE TABLE EMPLOYEE
+(
+     Emp_id INT PRIMARY KEY,
+     Emp_name VARCHAR(30),
+     Dept VARCHAR(20),
+     Salary DECIMAL(10,2)
+);
 
+
+INSERT INTO EMPLOYEE(Emp_id, Emp_name, Dept, Salary) VALUES
+(1, 'David_Smith', 'HR', 7500.00);
+INSERT INTO EMPLOYEE(Emp_id, Emp_name, Dept, Salary) VALUES
+(2, 'Oliver_Jones', 'Marketing', 6800.00);
+INSERT INTO EMPLOYEE(Emp_id, Emp_name, Dept, Salary) VALUES
+(3, 'Charles_Brown', 'Production', 7200.00);
+INSERT INTO EMPLOYEE(Emp_id, Emp_name, Dept, Salary) VALUES
+(4, 'Alice_Johnson', 'Sales', 8100.00);
+INSERT INTO EMPLOYEE(Emp_id, Emp_name, Dept, Salary) VALUES
+(5, 'Diana_Prince', 'Production', 9500.00); 
+SELECT *
+FROM EMPLOYEE;
+
+SELECT *
+FROM EMPLOYEE
+WHERE Salary > 7000;
+
+UPDATE EMPLOYEE
+SET Salary = 8200.00
+WHERE Emp_name = 'David_Smith'
+SELECT *
+FROM EMPLOYEE;
+
+INSERT INTO EMPLOYEE(Emp_id, Emp_name, Dept, Salary)
+VALUES (6, 'Daniel_Harris', 'Production', 6700.00);
+SELECT *
+FROM EMPLOYEE;
+
+DELETE FROM Employee
+WHERE Emp_id = 3;
+SELECT *
+FROM EMPLOYEE;
+
+SELECT * FROM Employee
+WHERE Emp_name NOT LIKE 'D%' AND Emp_name NOT LIKE 'O%';
+
+SELECT Dept, SUM(Salary) AS Total_Salary
+FROM EMPLOYEE
+GROUP BY Dept;
+
+UPDATE EMPLOYEE
+SET Salary = Salary * 1.05
+WHERE Dept = 'Production';
+SELECT *
+FROM EMPLOYEE;
+
+DELETE FROM EMPLOYEE
+WHERE Salary<7000;
+SELECT *
+FROM EMPLOYEE;
+
+SELECT Emp_name, Salary
+FROM EMPLOYEE
+WHERE Salary =(SELECT MIN(Salary)
+              FROM EMPLOYEE);
+
+INSERT INTO EMPLOYEE(Emp_id, Emp_name, Dept, Salary) VALUES
+(7,'XYZ','Marketing',1000.00);
+SELECT *
+FROM EMPLOYEE;
+UPDATE  EMPLOYEE
+SET Salary=8200.00
+WHERE Dept='Marketing'; 
+SELECT *
+FROM EMPLOYEE;
+
+SELECT Emp_name
+FROM EMPLOYEE
+WHERE Emp_name LIKE 'A%';
+
+SELECT Emp_name
+FROM EMPLOYEE
+WHERE Emp_name LIKE '%it%';
+
+SELECT DISTINCT UPPER(Dept)
+FROM EMPLOYEE;
+
+SELECT *
+FROM EMPLOYEE
+WHERE Dept LIKE 'M_r%' AND Dept LIKE '%ket%';
+
+SELECT DISTINCT UPPER(REVERSE(Dept))
+FROM EMPLOYEE;
