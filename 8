@@ -25,8 +25,8 @@ CREATE TABLE ORDERS
     EmployeeID INT,
     OrderDate DATE,
     ShipperID INT,
-    FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID),
-    FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID)
+    FOREIGN KEY (CustomerID) REFERENCES CUSTOMER(CustomerID),
+    FOREIGN KEY (EmployeeID) REFERENCES EMPLOYEES(EmployeeID)
 );
 
 INSERT INTO CUSTOMER VALUES (1, 'David Miller', 9876543210, '123 Main St', 'New York', '10001', 'USA');
