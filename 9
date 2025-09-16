@@ -89,3 +89,110 @@ FROM CUSTOMERS
 UNION
 SELECT custid
 FROM ORDERS9;
+***************************************************************************************
+CREATE TABLE ITEMS
+(
+    itemid INT PRIMARY KEY,
+    Itemname VARCHAR(50),
+    category VARCHAR(20),
+    Price DECIMAL(10,2),
+    Instock INT CHECK (Instock >= 0)
+);
+
+CREATE TABLE CUSTOMERS
+(
+    custid INT PRIMARY KEY,
+    Custname VARCHAR(20),
+    Address VARCHAR(20),
+    state VARCHAR(20)
+);
+    
+
+CREATE TABLE ORDERS9
+(
+    orderid INT PRIMARY KEY,
+    Itemid INT,
+    custid INT,
+    Quantity INT,
+    Orderdate DATE,
+    FOREIGN KEY(Itemid) REFERENCES ITEMS( Itemid),
+    FOREIGN KEY(custid) REFERENCES CUSTOMERS(custid)
+);
+    
+CREATE TABLE  DELIVERY
+(
+    deliveryid INT PRIMARY KEY,
+    Custid INT,
+    orderid INT,
+    FOREIGN KEY(custid) REFERENCES CUSTOMERS(custid),
+    FOREIGN KEY(orderid) REFERENCES ORDERS9(orderid)
+);    
+      
+INSERT INTO ITEMS VALUES 
+(1, 'iPhone 14', 'Mobile', 5001, 50);
+INSERT INTO ITEMS VALUES 
+(2, 'Samsung Galaxy S4', 'Mobile', 600, 30);
+INSERT INTO ITEMS VALUES 
+(3, 'Dell Laptop', 'Laptop', 1500, 20);
+INSERT INTO ITEMS VALUES 
+(4, 'Sony Headphones', 'Electronics', 200, 100);
+INSERT INTO ITEMS VALUES 
+(5, 'LG TV', 'Electronics', 6000, 15);
+SELECT *
+FROM ITEMS;
+
+INSERT INTO CUSTOMERS VALUES
+(101, 'John Doe', '123 Main St', 'New York');
+INSERT INTO CUSTOMERS VALUES
+(102, 'Jane Smith', '456 Oak St', 'Florida');
+INSERT INTO CUSTOMERS VALUES
+(103, 'Mickey', '789 Pine St', 'New York');
+INSERT INTO CUSTOMERS VALUES
+(104, 'Alice', '321 Park Ave', 'Florida');
+INSERT INTO CUSTOMERS VALUES
+(105, 'Jack', '654 River Rd', 'New York');
+SELECT *
+FROM CUSTOMERS;
+
+INSERT INTO ORDERS9 VALUES
+(201, 1, 101, 1, TO_DATE('15-01-2023','DD-MM-YYYY'));
+INSERT INTO ORDERS9 VALUES
+(202, 2, 102, 2, TO_DATE('12-03-2024','DD-MM-YYYY'));
+INSERT INTO ORDERS9 VALUES
+(203, 3, 103, 1, TO_DATE('20-05-2024','DD-MM-YYYY'));
+INSERT INTO ORDERS9 VALUES
+(204, 4, 103, 3, TO_DATE('10-07-2023','DD-MM-YYYY'));
+SELECT *
+FROM ORDERS9;
+
+INSERT INTO DELIVERY VALUES
+(301, 101, 201);
+INSERT INTO DELIVERY VALUES
+(302, 102, 202);
+SELECT *
+FROM DELIVERY;
+
+SELECT * 
+FROM CUSTOMERS
+WHERE custid IN (SELECT custid FROM ORDERS9);
+
+SELECT *
+FROM CUSTOMERS
+WHERE custid IN (SELECT custid FROM DELIVERY);
+
+SELECT c.Custname, o.Orderdate
+FROM CUSTOMERS c
+JOIN ORDERS9 o ON c.custid = o.custid
+WHERE c.Custname LIKE 'J%';
+
+SELECT i.Itemname, i.Price
+FROM ITEMS i
+JOIN ORDERS9 o ON i.itemid = o.Itemid
+JOIN CUSTOMERS c ON o.custid = c.custid
+WHERE c.Custname = 'Mickey';
+
+SELECT *
+FROM CUSTOMERS
+WHERE custid IN (SELECT custid FROM ORDERS
+                 WHERE Orderdate > TO_DATE('31-12-2022','DD-MM-YYYY')
+                 AND custid IN (SELECT custid FROM DELIVERY));
