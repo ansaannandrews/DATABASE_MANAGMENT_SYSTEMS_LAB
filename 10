@@ -1,0 +1,39 @@
+CREATE TABLE BANK
+(   
+    bankid INT PRIMARY KEY,
+    bankname VARCHAR(20),
+    headoffice VARCHAR(20),
+    branch VARCHAR(20),
+    branchcode VARCHAR(20)
+);
+
+INSERT INTO BANK VALUES(1,'State Bank of India','Mumbai','Delhi Main Branch','SBI0001');
+INSERT INTO BANK VALUES(2,'HDFC Bank','Mumbai','Bangalore','HDFC0072');
+INSERT INTO BANK VALUES(3,'ICICI Bank','Mumbai','Chennai T. Nagar','ICICI0045');
+INSERT INTO BANK VALUES(4,'Axis Bank','Mumbai','Hyderabad','AXIS0088');
+INSERT INTO BANK VALUES(5,'Punjab National Bank','New Delhi','Kolkata Salt Lake','PNB0123');
+SELECT *
+FROM BANK;
+
+commit;
+
+DELETE FROM BANK
+WHERE bankid=5;
+SELECT *
+FROM BANK;
+
+ROLLBACK;
+SELECT *
+FROM BANK;
+
+SAVEPOINT sp1;
+
+INSERT INTO BANK VALUES(6,'Canara Bank','Mumbai','New Delhi','CNB0032');
+
+SELECT *
+FROM BANK;
+
+ROLLBACK TO sp1;
+
+SELECT *
+FROM BANK;
