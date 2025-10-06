@@ -1,0 +1,39 @@
+CREATE TABLE Bank12 (
+    bankcode VARCHAR(3) PRIMARY KEY,
+    bankname VARCHAR(20) NOT NULL,
+    headoffice VARCHAR(20),
+    branches INT CHECK (branches > 0)
+);
+
+INSERT INTO Bank12 VALUES ('SBI', 'State Bank', 'Mumbai', 15000);
+INSERT INTO Bank12 VALUES ('HDF', 'HDFC Bank', 'Mumbai', 6000);
+INSERT INTO Bank12 VALUES ('ICB', 'ICICI Bank', 'Chennai', 5500);
+INSERT INTO Bank12 VALUES ('ACB', 'ACICI Bank', 'Chennai', 7500);
+
+SELECT *
+FROM Bank12;
+
+CREATE TABLE Branch (
+    branchid INT PRIMARY KEY,
+    branchname VARCHAR(50) DEFAULT 'New Delhi',
+    bankid VARCHAR(3),
+    FOREIGN KEY (bankid) REFERENCES Bank12(bankcode)
+);
+
+INSERT INTO Branch VALUES (101, 'MG Road Branch', 'SBI');
+INSERT INTO Branch(branchid, bankid) VALUES(102,'SBI');
+INSERT INTO Branch VALUES (103, 'T Nagar Branch', 'ICB');
+INSERT INTO Branch VALUES (104, 'Connaught Place Branch', 'ICB');
+
+SELECT *
+FROM Branch;
+
+CREATE VIEW bank_head AS
+SELECT *
+FROM Bank
+WHERE head_office = 'Chennai';
+
+CREATE VIEW bank_branch AS
+SELECT *
+FROM Branch
+WHERE branchname LIKE '%MG Road%';
