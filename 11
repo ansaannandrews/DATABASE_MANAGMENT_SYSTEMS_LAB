@@ -1,0 +1,28 @@
+CREATE TABLE GRT
+(
+    GID INT PRIMARY KEY,
+    NAME VARCHAR(20)
+); 
+
+INSERT INTO GRT VALUES
+(1,'ABC');
+INSERT INTO GRT VALUES
+(2,'DEF');
+
+GRANT SELECT ON GRT TO c23csa18;
+
+GRANT ALL ON GRT TO c23csa18;
+
+REVOKE ALL ON GRT FROM C23csa18;
+
+GRANT INSERT ON GRT TO c23csa18;
+
+GRANT SELECT ON GRT TO c23csa18;
+
+REVOKE ALL ON GRT FROM C23csa18;
+--------------------------------------------------------------------------------------
+Select * From C23csa17.Grt;
+
+Insert Into C23csa17.Grt Values
+(3,'xyz');
+Select * From C23csa17.Grt;
