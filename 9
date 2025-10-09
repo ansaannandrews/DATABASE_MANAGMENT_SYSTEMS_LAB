@@ -37,98 +37,6 @@ CREATE TABLE  DELIVERY
 );    
       
 INSERT INTO ITEMS VALUES 
-(1, 'iPhone 14', 'Mobile', 1200, 50);
-INSERT INTO ITEMS VALUES 
-(2, 'Samsung Galaxy S4', 'Mobile', 600, 30);
-INSERT INTO ITEMS VALUES 
-(3, 'Dell Laptop', 'Laptop', 1500, 20);
-INSERT INTO ITEMS VALUES 
-(4, 'Sony Headphones', 'Electronics', 200, 100);
-INSERT INTO ITEMS VALUES 
-(5, 'LG TV', 'Electronics', 2500, 15);
-SELECT *
-FROM ITEMS;
-
-INSERT INTO CUSTOMERS VALUES
-(101, 'John Doe', '123 Main St', 'New York');
-INSERT INTO CUSTOMERS VALUES
-(102, 'Jane Smith', '456 Oak St', 'California');
-INSERT INTO CUSTOMERS VALUES
-(103, 'Mickey', '789 Pine St', 'Texas');
-INSERT INTO CUSTOMERS VALUES
-(104, 'Alice', '321 Park Ave', 'Florida');
-INSERT INTO CUSTOMERS VALUES
-(105, 'Jack', '654 River Rd', 'Nevada');
-SELECT *
-FROM CUSTOMERS;
-
-INSERT INTO ORDERS9 VALUES
-(201, 1, 101, 1, TO_DATE('15-01-2013','DD-MM-YYYY'));
-INSERT INTO ORDERS9 VALUES
-(202, 2, 102, 2, TO_DATE('12-03-2014','DD-MM-YYYY'));
-INSERT INTO ORDERS9 VALUES
-(203, 3, 103, 1, TO_DATE('20-05-2015','DD-MM-YYYY'));
-INSERT INTO ORDERS9 VALUES
-(204, 4, 104, 3, TO_DATE('10-07-2016','DD-MM-YYYY'));
-INSERT INTO ORDERS9 VALUES
-(205, 2, 105, 1, TO_DATE('18-09-2017','DD-MM-YYYY'));
-SELECT *
-FROM ORDERS9;
-
-INSERT INTO DELIVERY VALUES
-(301, 101, 201);
-INSERT INTO DELIVERY VALUES
-(302, 102, 202);
-INSERT INTO DELIVERY VALUES
-(303, 103, 203);
-SELECT *
-FROM DELIVERY;
-
-SELECT custid
-FROM CUSTOMERS
-UNION
-SELECT custid
-FROM ORDERS9;
-***************************************************************************************
-CREATE TABLE ITEMS
-(
-    itemid INT PRIMARY KEY,
-    Itemname VARCHAR(50),
-    category VARCHAR(20),
-    Price DECIMAL(10,2),
-    Instock INT CHECK (Instock >= 0)
-);
-
-CREATE TABLE CUSTOMERS
-(
-    custid INT PRIMARY KEY,
-    Custname VARCHAR(20),
-    Address VARCHAR(20),
-    state VARCHAR(20)
-);
-    
-
-CREATE TABLE ORDERS9
-(
-    orderid INT PRIMARY KEY,
-    Itemid INT,
-    custid INT,
-    Quantity INT,
-    Orderdate DATE,
-    FOREIGN KEY(Itemid) REFERENCES ITEMS( Itemid),
-    FOREIGN KEY(custid) REFERENCES CUSTOMERS(custid)
-);
-    
-CREATE TABLE  DELIVERY
-(
-    deliveryid INT PRIMARY KEY,
-    Custid INT,
-    orderid INT,
-    FOREIGN KEY(custid) REFERENCES CUSTOMERS(custid),
-    FOREIGN KEY(orderid) REFERENCES ORDERS9(orderid)
-);    
-      
-INSERT INTO ITEMS VALUES 
 (1, 'iPhone 14', 'Mobile', 5001, 50);
 INSERT INTO ITEMS VALUES 
 (2, 'Samsung Galaxy S4', 'Mobile', 600, 30);
@@ -193,6 +101,72 @@ WHERE c.Custname = 'Mickey';
 
 SELECT *
 FROM CUSTOMERS
-WHERE custid IN (SELECT custid FROM ORDERS
+WHERE custid IN (SELECT custid FROM ORDERS9
                  WHERE Orderdate > TO_DATE('31-12-2022','DD-MM-YYYY')
                  AND custid IN (SELECT custid FROM DELIVERY));
+                 
+SELECT itemid
+FROM ORDERS9
+UNION
+SELECT o.Itemid
+FROM ORDERS9 o
+WHERE o.orderid NOT IN (SELECT orderid FROM DELIVERY);
+
+(SELECT c.custname
+FROM ORDERS9 o
+JOIN CUSTOMERS c ON o.custid = c.custid)
+INTERSECT
+(SELECT c.custname
+FROM DELIVERY d
+JOIN CUSTOMERS c ON d.custid = c.custid);
+
+(SELECT c.custname
+FROM ORDERS9 o
+JOIN CUSTOMERS c ON o.custid = c.custid)
+MINUS
+(SELECT c.custname
+FROM DELIVERY d
+JOIN CUSTOMERS c ON d.custid = c.custid);
+
+SELECT c.custname
+FROM ORDERS9 o
+JOIN CUSTOMERS c ON o.custid = c.custid
+GROUP BY c.custname
+HAVING count(o.orderid) = (SELECT MAX(order_count)
+    FROM (
+        SELECT COUNT(*)AS order_count
+        FROM ORDERS9
+        GROUP BY custid
+    )
+);
+
+SELECT  C.*
+FROM CUSTOMERS C
+JOIN ORDERS9 O ON C.custid = O.custid
+JOIN ITEMS I ON O.itemid = I.itemid
+WHERE I.Price > 5000;
+
+SELECT Custname, Address
+FROM CUSTOMERS
+WHERE custid NOT IN (
+    SELECT O.custid
+    FROM ORDERS9 O
+    JOIN ITEMS I ON O.Itemid = I.Itemid
+    WHERE I.Itemname = 'Samsung Galaxy S4'
+);
+
+SELECT *
+FROM CUSTOMERS C
+LEFT OUTER JOIN ORDERS9 O ON C.custid = O.custid;
+SELECT *
+FROM CUSTOMERS C
+RIGHT OUTER JOIN ORDERS9 O ON C.custid = O.custid;
+
+SELECT state, COUNT(*) AS total_customers
+FROM CUSTOMERS
+GROUP BY state;
+
+SELECT category, itemid, itemname, price
+FROM ITEMS
+WHERE price > (SELECT AVG(price) FROM ITEMS)
+GROUP BY category, itemid, itemname, price;
