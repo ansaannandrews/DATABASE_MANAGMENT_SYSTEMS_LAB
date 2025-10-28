@@ -1,0 +1,98 @@
+SET SERVEROUTPUT ON;
+SHOW SERVEROUTPUT;
+
+DECLARE
+    num INT;
+    i INT;
+BEGIN
+    num := :num;
+    i := num - 1;
+    WHILE (i > 0)
+    LOOP
+        num := num * i;
+        i := i - 1;
+    END LOOP;
+    dbms_output.put_line('Factorial is ' || num);
+END;
+
+
+DECLARE
+    numa INT;
+    numb INT;
+    numc INT;
+BEGIN
+    numa := :numa;
+    numb := :numb;
+    numc := :numc;
+
+    IF (numa > numb AND numa > numc) THEN
+        dbms_output.put_line(numa || ' is greatest');
+    ELSIF (numb > numa AND numb > numc) THEN
+        dbms_output.put_line(numb || ' is greatest');
+    ELSE
+        dbms_output.put_line(numc || ' is greatest');
+    END IF;
+END;
+
+
+DECLARE
+    numa INT;
+    numb INT;
+    operatorOf INT;
+    sumOf INT;
+    mul INT;
+    sub INT;
+    div INT;
+BEGIN
+    numa := :numa;
+    numb := :numb;
+    sumOf := numa + numb;
+    sub := numa - numb;
+    mul := numa * numb;
+
+    IF (numb != 0) THEN
+        div := numa / numb;
+    END IF;
+
+    operatorOf := :operatorOf;
+
+    CASE operatorOf
+        WHEN 1 THEN
+            dbms_output.put_line('Sum is ' || sumOf);
+        WHEN 2 THEN
+            dbms_output.put_line('Difference is ' || sub);
+        WHEN 3 THEN
+            dbms_output.put_line('Product is ' || mul);
+        WHEN 4 THEN
+            dbms_output.put_line('Quotient is ' || div);
+        ELSE
+            dbms_output.put_line('Enter correct choice');
+    END CASE;
+END;
+
+
+DECLARE
+    a INT;
+    b INT;
+    c INT;
+    num INT;
+BEGIN
+    a := 0;
+    b := 1;
+    c := 0;
+    num := :num;
+    num := num - 2;
+
+    dbms_output.put_line('The Fibonacci series is :');
+    dbms_output.put_line(a);
+    dbms_output.put_line(b);
+
+    WHILE (num > 0)
+    LOOP
+        c := a + b;
+        a := b;
+        b := c;
+        dbms_output.put_line(c);
+        num := num - 1;
+    END LOOP;
+END;
