@@ -131,3 +131,38 @@ BEGIN
 
     dbms_output.put_line('Sum of factorials up to ' || n || ' = ' || sum_fact);
 END;
+
+
+DECLARE
+    n INT;
+    i INT;
+    j INT;
+    fact INT;
+    sum_fact INT;
+BEGIN
+    n := :n;
+    fact := 1;
+    sum_fact := 0;
+
+    i := 1;
+    WHILE (i <= n) LOOP
+        fact := fact * i;
+        i := i + 1;
+    END LOOP;
+
+    dbms_output.put_line('Factorial of ' || n || ' = ' || fact);
+
+    i := 1;
+    WHILE (i <= n) LOOP
+        j := 1;
+        fact := 1;
+        WHILE (j <= i) LOOP
+            fact := fact * j;
+            j := j + 1;
+        END LOOP;
+        sum_fact := sum_fact + fact;
+        i := i + 1;
+    END LOOP;
+
+    dbms_output.put_line('Sum of factorials up to ' || n || ' = ' || sum_fact);
+END;
