@@ -5,7 +5,8 @@ CREATE OR REPLACE FUNCTION factorial(n INT)
 RETURN INT AS 
    fact INT := 1; 
 BEGIN 
-   FOR i IN 1..n LOOP 
+   FOR i IN 1..n
+   LOOP 
       fact := fact * i; 
    END LOOP; 
    RETURN fact; 
