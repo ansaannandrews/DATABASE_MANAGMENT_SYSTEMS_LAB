@@ -96,3 +96,44 @@ BEGIN
         num := num - 1;
     END LOOP;
 END;
+
+
+DECLARE
+    n INT;
+    i INT;
+    x INT;
+    fa INT;
+    j INT;
+    fact INT;
+BEGIN
+    n := :n;
+    x := n;
+    fa := 0;
+    fact := 1;
+
+    i := 1;
+    WHILE (i <= n)
+    LOOP
+        fact := fact * i;
+        i := i + 1;
+    END LOOP;
+
+    dbms_output.put_line('Factorial of ' || x || ' = ' || fact);
+
+    i := 1;
+    WHILE (i <= x)
+    LOOP
+        fact := 1;
+        j := 1;
+        WHILE (j <= i)
+        LOOP
+            fact := fact * j;
+            j := j + 1;
+        END LOOP;
+
+        fa := fa + fact;
+        i := i + 1;
+    END LOOP;
+
+    dbms_output.put_line('Sum of factorials from 1 to ' || x || ' = ' || fa);
+END;
