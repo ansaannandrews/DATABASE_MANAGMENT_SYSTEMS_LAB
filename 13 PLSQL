@@ -184,3 +184,22 @@ BEGIN
    
 END;
 /
+
+
+DECLARE
+   n INT;
+   sum8 INT;
+   i INT;
+BEGIN
+   SUM8:=0;
+   n:=:n;
+   i:=1;
+   while(i<=n) loop
+    if mod(i,2) = 1 then
+     sum8 := i + sum8;
+    end if;
+    i:=i+1;
+   end loop;
+   dbms_output.put_line('Sum = '||sum8);
+END;
+/
