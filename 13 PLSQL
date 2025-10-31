@@ -166,3 +166,21 @@ BEGIN
 
     dbms_output.put_line('Sum of factorials up to ' || n || ' = ' || sum_fact);
 END;
+
+
+DECLARE
+   n INT;
+   sum8 INT;
+   i INT;
+BEGIN
+   SUM8:=0;
+   n:=:n;
+   for i in 1..n loop
+    if mod(i,2) = 1 then
+     sum8 := i + sum8;
+    end if;
+   end loop;
+   dbms_output.put_line('Sum = '||sum8);
+   
+END;
+/
