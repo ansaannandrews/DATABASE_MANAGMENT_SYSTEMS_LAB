@@ -1,1 +1,62 @@
+SET SERVEROUTPUT ON;
+SHOW SERVEROUTPUT;
 
+CREATE OR REPLACE PACKAGE PK AS
+  PROCEDURE P1(a int,b int);
+  PROCEDURE P2(C int);
+  FUNCTION F1(d INT) return varchar2;
+  FUNCTION F2(a int,b int,c int) RETURN INT;
+END PK;
+/
+
+CREATE OR REPLACE PACKAGE BODY PK AS
+    PROCEDURE P1(a int,b int) IS
+    BEGIN
+        dbms_output.put_line('Sum = '||(a+b));
+        dbms_output.put_line('Average = '||((a+b)/2));
+        dbms_output.put_line('Product = '||(a*b));
+    END P1;
+    PROCEDURE P2(C int) IS
+    BEGIN
+        dbms_output.put_line('Square root of '||c||' = '||sqrt(c));
+    END P2;
+    FUNCTION F1(d INT) return varchar2 IS
+       BEGIN
+        if(mod(d,2) = 1) then
+           RETURN 'ODD';
+        ELSE
+           RETURN 'EVEN';
+        END IF;
+    END F1;
+    FUNCTION F2(a int,b int,c int) RETURN INT IS
+       total int;
+    BEGIN
+        total:=(a+b+c);
+        dbms_output.put_line('SUM = '||total);
+        RETURN total;
+    END F2;
+END PK;
+/
+
+
+DECLARE
+   p int;
+   q int;
+   r int;
+   s INT;
+   sum34 INT;
+   RESULT varchar2(5);
+BEGIN
+   p:=:p;
+   q:=:q;
+   r:=:r;
+   s:=:s;
+   pk.p1(p,q);
+   pk.p2(r);
+   result:=pk.f1(s);
+   sum34:=pk.f2(p,q,r);
+   
+   dbms_output.put_line(result);
+   dbms_output.put_line(sum34);
+END;
+/
