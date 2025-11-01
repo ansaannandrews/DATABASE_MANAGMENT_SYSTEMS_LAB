@@ -315,3 +315,15 @@ BEGIN
     dbms_output.new_line;
   end loop;
 END;
+
+
+-------exception handiling
+DECLARE
+  i int;
+BEGIN
+  i:=:i;
+  i:=(i+1)/0;
+  exception
+  when zero_divide THEN
+  dbms_output.put_line('LOGICAL ERROR');
+END;
