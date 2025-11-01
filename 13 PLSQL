@@ -133,6 +133,7 @@ BEGIN
 END;
 
 
+-----Program  to find the SUMMATION OF ODD NUMBERS USING FOR LOOP
 DECLARE
    n INT;
    sum8 INT;
@@ -151,6 +152,7 @@ END;
 /
 
 
+-----Program  to find the SUMMATION OF ODD NUMBERS USING WHILE  LOOP
 DECLARE
    n INT;
    sum8 INT;
@@ -168,3 +170,148 @@ BEGIN
    dbms_output.put_line('Sum = '||sum8);
 END;
 /
+
+
+-----Program to check whether a number is even or odd.
+DECLARE
+  n int;
+BEGIN
+  n:=:n;
+  if mod(n,2) = 0 then
+      dbms_output.put_line(n||' is even');
+  else
+      dbms_output.put_line(n||' is odd');
+  end if;
+END;
+
+
+-----Program to find the sum of digits of a number.
+DECLARE
+   n int;
+   x int;
+   sum1 int;
+BEGIN
+   n:=:n;
+   sum1:=0;
+   while(n>0)
+   loop
+     x:=mod(n,10);
+     sum1:=sum1+x;
+     n:=n/10;
+   end loop;
+   dbms_output.put_line('Sum of digits of number = '||sum1);
+END;
+
+
+-----Program to reverse a number or string.
+DECLARE
+   str VARCHAR2(100);
+   rev VARCHAR2(100) := '';
+BEGIN
+   str :=:str;   -- input string
+ 
+   FOR i IN REVERSE 1 .. LENGTH(str)
+   LOOP
+      rev := rev || SUBSTR(str, i, 1);
+   END LOOP;
+
+   DBMS_OUTPUT.PUT_LINE('Reversed String = ' || rev);
+END;
+
+
+-----Program to check whether a given string is a palindrome.
+DECLARE
+   str VARCHAR2(100);
+   rev VARCHAR2(100) := '';
+   tempstr VARCHAR2(100);
+BEGIN
+   str :=:str;  
+   tempstr:=str;
+   FOR i IN REVERSE 1 .. LENGTH(str)
+   LOOP
+      rev := rev || SUBSTR(str, i, 1);
+   END LOOP;
+   if(tempstr=rev) then
+     dbms_output.put_line('PALINDROME');
+   else
+     dbms_output.put_line('NOT PALINDROME');
+   end if;
+END;
+
+
+-----Program to check whether a number is prime.
+DECLARE
+  i int;
+  n int;
+  flag int;
+BEGIN
+   i:=2;
+   flag:=1;
+   n:=:n;
+   IF(n<=1) THEN
+      DBMS_OUTPUT.PUT_LINE(n||' is NOT a prime number');
+      RETURN;
+   end if;
+   for i IN 2..n/2
+   loop
+     if(mod(n,i) = 0) then
+     flag:=0;
+     end if;
+   end loop;
+   if(flag=0) then
+      DBMS_OUTPUT.PUT_LINE(n||' is NOT a prime number');
+   else
+     DBMS_OUTPUT.PUT_LINE(n||' is a prime number');
+   end if;
+END;
+
+
+-----Program to count the number of vowels in a string.
+DECLARE
+    str varchar2(100);
+    i int;
+    ch varchar2(1);
+    vcount int;
+BEGIN
+  str:=:str;
+  vcount:=0;
+  for i IN 1..LENGTH(str)
+  loop
+  ch:=LOWER(SUBSTR(str,i,1));
+    if(ch='a'OR ch='e' OR ch='i' OR ch='o' OR ch='u') then
+      vcount:=vcount+1;
+    end if;
+  end loop;
+   dbms_output.put_line('Number of vowels in '||str||' = '||vcount);
+END;
+
+
+-----Program to print multiplication tables using loops.
+DECLARE
+  n int;
+  i int;
+  m int;
+BEGIN
+  n:=:n;
+  for i IN 1..10
+  loop 
+    m:=n*i;
+    dbms_output.put_line(n||' * '||i||' = '||m);
+  end loop;
+END;
+
+
+-----Program using nested loops to display patterns.
+DECLARE
+  i int;
+  j int;
+BEGIN
+  for i IN 1..5
+  loop
+    for j IN 1..i
+    loop
+      dbms_output.put('*');
+    end loop;
+    dbms_output.new_line;
+  end loop;
+END;
