@@ -1,39 +1,57 @@
-CREATE TABLE Bank12 (
-    bankcode VARCHAR(3) PRIMARY KEY,
-    bankname VARCHAR(20) NOT NULL,
-    headoffice VARCHAR(20),
-    branches INT CHECK (branches > 0)
+CREATE TABLE Bank2 (
+bankcode VARCHAR(3),
+bankname VARCHAR(100),
+headoffice VARCHAR(100),
+branches INT
 );
-
-INSERT INTO Bank12 VALUES ('SBI', 'State Bank', 'Mumbai', 15000);
-INSERT INTO Bank12 VALUES ('HDF', 'HDFC Bank', 'Mumbai', 6000);
-INSERT INTO Bank12 VALUES ('ICB', 'ICICI Bank', 'Chennai', 5500);
-INSERT INTO Bank12 VALUES ('ACB', 'ACICI Bank', 'Chennai', 7500);
+INSERT INTO Bank2 VALUES('SBI', 'State Bank of India', 'Mumbai', 10);
+INSERT INTO Bank2 VALUES('ICI', 'ICICI Bank', 'Mumbai', 8);
+INSERT INTO Bank2 VALUES('HDF', 'HDFC Bank', 'New Delhi', 6);
+INSERT INTO Bank2 VALUES('PNB', 'Punjab National Bank', 'Chandigarh', 7);
+INSERT INTO Bank2 VALUES('SBT', 'State Bank of Travancore', 'Ernakulam', 4);
+INSERT INTO Bank2 VALUES('CAN', 'Canara Bank', 'Bangalore', 5);
 
 SELECT *
-FROM Bank12;
+FROM BANK2;
+
+ALTER TABLE Bank2
+ADD CONSTRAINT pk_bankcode PRIMARY KEY (bankcode);
+ALTER TABLE Bank2
+ADD CONSTRAINT chk_bankname_not_null CHECK (bankname IS NOT NULL);
+ALTER TABLE Bank2
+ADD CONSTRAINT chk_branches_positive CHECK (branches > 0);
 
 CREATE TABLE Branch (
-    branchid INT PRIMARY KEY,
-    branchname VARCHAR(50) DEFAULT 'New Delhi',
-    bankid VARCHAR(3),
-    FOREIGN KEY (bankid) REFERENCES Bank12(bankcode)
+branchid INT,
+branchname VARCHAR(100),
+bankid VARCHAR(3)
 );
-
-INSERT INTO Branch VALUES (101, 'MG Road Branch', 'SBI');
-INSERT INTO Branch(branchid, bankid) VALUES(102,'SBI');
-INSERT INTO Branch VALUES (103, 'T Nagar Branch', 'ICB');
-INSERT INTO Branch VALUES (104, 'Connaught Place Branch', 'ICB');
+INSERT INTO Branch VALUES(1, 'Kottayam', 'SBI');
+INSERT INTO Branch VALUES(2, 'Ernakulam', 'ICI');
+INSERT INTO Branch VALUES(3, DEFAULT, 'HDF');
+INSERT INTO Branch VALUES(4, 'Chandigarh', 'PNB');
+INSERT INTO Branch VALUES(5, 'Ernakulam', 'SBT');
+INSERT INTO Branch VALUES(6, 'Bangalore', 'CAN');
 
 SELECT *
-FROM Branch;
+FROM BRANCH;
 
-CREATE VIEW bank_head AS
+ALTER TABLE BRANCH
+ADD CONSTRAINT pbranchid PRIMARY KEY(branchid);
+ALTER TABLE BRANCH
+MODIFY branchname VARCHAR(100) DEFAULT 'New Delhi';
+ALTER TABLE BRANCH
+ADD CONSTRAINT fbankid FOREIGN KEY(bankid) REFERENCES BANK2(bankcode);
+
+CREATE VIEW BANK_HEAD AS
 SELECT *
-FROM Bank
-WHERE head_office = 'Chennai';
+FROM BANK2
+WHERE headoffice='Ernakulam';
 
 CREATE VIEW bank_branch AS
-SELECT *
-FROM Branch
-WHERE branchname LIKE '%MG Road%';
+SELECT b.*
+FROM Bank2 b
+JOIN Branch br ON b.bankcode = br.bankid
+WHERE br.branchname = 'Kottayam';
+
+
