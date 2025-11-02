@@ -1,1 +1,41 @@
+SET SERVEROUTPUT ON;
+SHOW SERVEROUTPUT;
 
+CREATE TABLE bankdetails(
+    accno INT,
+    name VARCHAR2(15),
+    balance INT,
+    adate DATE
+);
+
+INSERT INTO bankdetails VALUES(1001, 'aby', 3005, '10-oct-15');
+INSERT INTO bankdetails VALUES(1002, 'alan', 4000, '05-may-95');
+INSERT INTO bankdetails VALUES(1003, 'amal', 5000, '16-mar-92');
+INSERT INTO bankdetails VALUES(1004, 'jeffin', 3500, '01-apr-50');
+
+CREATE TABLE banknew(
+    accno INT,
+    intr NUMBER(10,2)
+);
+
+DECLARE
+    CURSOR temp IS
+    SELECT accno,
+    name, 
+    balance, 
+    adate FROM bankdetails;
+    TEMPVAR TEMP%ROWTYPE;
+    intr NUMBER(10,2);
+BEGIN
+   OPEN temp;
+   loop
+     FETCH temp into tempvar;
+     exit when temp%NOTFOUND;
+     intr:=0.08*tempvar.BALANCE;
+     INSERT INTO banknew VALUES (tempvar.accno,intr);
+     
+     dbms_output.put_line(tempvar.accno||' = '||intr);
+   end loop;
+   close TEMP;
+END;
+/
